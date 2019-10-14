@@ -1,0 +1,8 @@
+<h1>New album</h1>
+
+<%= partial("albums/form", locals: {
+  album_form:  album_form,
+  album:       nil,
+  form_action: "/albums",
+  form_method: "post,
+}) %>

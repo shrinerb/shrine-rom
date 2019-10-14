@@ -1,0 +1,25 @@
+<li class="album-photo">
+  <div class="media">
+    <div class="media-left">
+      <!-- dynamic link that will generate a thumbnail "on-the-fly" -->
+      <img src="<%= photo.image.derivation_url(:thumbnail, 300, 300) %>"
+           width=150
+           class="img-thumbnail media-object" />
+    </div>
+    <div class="media-body">
+      <dl>
+        <dt>Dimensions</dt>
+        <dd><%= photo.image.dimensions.join("x") %></dd>
+
+        <dt>MIME type</dt>
+        <dd><%= photo.image.mime_type %></dd>
+
+        <dt>Filesize</dt>
+        <dd><%= photo.image.size %></dd>
+
+        <dt>Filename</dt>
+        <dd><%= photo.image.original_filename %></dd>
+      </dt>
+    </div>
+  </div>
+</li>

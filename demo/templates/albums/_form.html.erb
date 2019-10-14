@@ -1,0 +1,50 @@
+<% form album_form, { action: form_action, enctype: "multipart/form-data" }, labeler: :explicit do |f| %>
+  <%= f.input :hidden, name: "_method", value: form_method, obj: nil %> <%# # used in tandem with Rack::MethodOverride to enable PUT requests %>
+
+  <div class="form-group">
+    <%= f.input :name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <!-- will be replaced by Uppy -->
+    <%= f.input :cover_photo,
+      type: :file,
+      attr: { accept: image_types.join(",") },
+      data: {
+        preview_element: "preview-cover-photo",
+        upload_result_element: "album-cover-photo-upload-result"
+      },
+      dasherize_data: true %>
+
+    <!-- for storing cover photo uploaded file data -->
+    <%= f.input :cover_photo,
+      type: :hidden,
+      error_handler: false,
+      id: "album-cover-photo-upload-result" %>
+  </div>
+
+  <div class="image-preview">
+    <!-- static link to the thumbnail generated on attachment -->
+    <img src="<%= album.cover_photo_url(:medium) %>"
+         width=300
+         class="img-thumbnail file-upload-preview"
+         id="preview-cover-photo" \>
+  </div>
+
+  <div class="form-group">
+    <!-- will be replaced by Uppy -->
+    <%= f.input :photos,
+      type: :file,
+      label: "Select photos",
+      attr: { multiple: true, accept: image_types.join(",") } %>
+  </div>
+
+  <ul class="list-unstyled file-upload-list">
+    <% album.photos.each do |photo| %>
+      <%= render :photo, photo: photo %>
+    <% end %>
+  </ul>
+
+  <input type="submit" value="Save" class="btn btn-primary" \>
+  <a href="/albums" class="btn btn-default">&larr; Back to albums</a>
+<% end %>

@@ -1,0 +1,13 @@
+require "bundler/setup"
+require "rom/sql/rake_task"
+
+namespace :db do
+  task :setup do
+    require_relative "system/container"
+
+    require "rom"
+    require "rom-sql"
+
+    ROM::SQL::RakeSupport.env = ROM.container(:sql, Container[:config].database_url)
+  end
+end

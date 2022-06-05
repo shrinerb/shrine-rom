@@ -20,9 +20,9 @@ class Shrine
       module AttacherMethods
         attr_reader :repository
 
-        def initialize(respository: nil, **options)
+        def initialize(repository: nil, **options)
           super(**options)
-          @repository = respository
+          @repository = repository
         end
 
         # The _persistence plugin uses #rom_persist, #rom_reload and #rom? to

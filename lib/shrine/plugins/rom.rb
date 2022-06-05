@@ -45,6 +45,13 @@ class Shrine
           rom.retrieve_record { |entity| yield entity }
         end
 
+        # Returns true if the data attribute represents a JSON or JSONB column.
+        # Used by the _persistence plugin to determine whether serialization
+        # should be skipped.
+        def rom_hash_attribute?
+          record.public_send(attribute).is_a?(Hash)
+        end
+
         # Returns whether the record is a ROM entity. Used by the _persistence
         # plugin.
         def rom?

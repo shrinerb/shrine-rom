@@ -4,11 +4,8 @@ Provides [ROM] integration for [Shrine].
 
 ## Installation
 
-Put the gem in your Gemfile:
-
-```rb
-# Gemfile
-gem "shrine-rom"
+```sh
+$ bundle add shrine-rom
 ```
 
 ## Quick start

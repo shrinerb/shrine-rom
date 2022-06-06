@@ -49,7 +49,10 @@ class Shrine
         # Used by the _persistence plugin to determine whether serialization
         # should be skipped.
         def rom_hash_attribute?
-          record.public_send(attribute).is_a?(Hash)
+          return false unless repository
+
+          column = rom.column_type(attribute)
+          column && [:json, :jsonb].include?(column.to_sym)
         end
 
         # Returns whether the record is a ROM entity. Used by the _persistence
@@ -87,6 +90,12 @@ class Shrine
           else
             yield record_relation.one!
           end
+        end
+
+        def column_type(attribute)
+          # sends "json" or "jsonb" string for JSON or JSONB column.
+          # returns nil for String column
+          relation.schema[attribute].type.meta[:db_type]
         end
 
         private

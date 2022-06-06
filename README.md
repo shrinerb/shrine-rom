@@ -220,7 +220,14 @@ objects are registered using [dry-container].
 
 ```rb
 Shrine.plugin :backgrounding
-Shrine::Attacher.destroy_block { Attachment::DestroyJob.perform_async(self.class, data) }
+
+Shrine::Attacher.promote_block do
+  Attachment::PromoteJob.perform_async(self.class.name, record.class.name, record.id, name, file_data)
+end
+
+Shrine::Attacher.destroy_block do
+  Attachment::DestroyJob.perform_async(self.class.name, data)
+end
 ```
 ```rb
 attacher = photo.image_attacher
@@ -228,25 +235,26 @@ attacher.assign(file)
 
 photo = photo_repo.create(attacher.column_values)
 
-attacher.promote_block do |attacher|
-  Attachment::PromoteJob.perform_async(:photo_repo, photo.id, :image, attacher.file_data)
-end
-
 attacher.finalize # calls the promote block
 ```
 ```rb
 class Attachment::PromoteJob
   include Sidekiq::Worker
 
-  def perform(repo_name, record_id, name, file_data)
-    repo   = Application[repo_name] # retrieve repo from container
-    entity = repo.find(record_id)
+  def perform(attacher_class, entity_class, entity_id, name, file_data)
+    attacher_class = Object.const_get(attacher_class)
 
-    attacher = Shrine::Attacher.retrieve(
+    # entity_class is your custom ROM::Struct entity class name.
+    # generate repo_registry_name from entity_class.
+    repo = Application[repo_registry_name] # retrieve repo from container
+
+    entity = repo.find(entity_id)
+
+    attacher = attacher_class.retrieve(
       entity:     entity,
       name:       name,
       file:       file_data,
-      repository: repo, # repository needs to be passed in
+      repository: repo, # repository needs to be passed in and it should be the last parameter
     )
 
     attacher.atomic_promote

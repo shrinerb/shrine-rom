@@ -6,8 +6,8 @@ Gem::Specification.new do |gem|
 
   gem.summary      = "Provides rom-rb integration for Shrine."
   gem.homepage     = "https://github.com/shrinerb/shrine-rom"
-  gem.authors      = ["Janko Marohnić"]
-  gem.email        = ["janko.marohnic@gmail.com"]
+  gem.authors      = ["Janko Marohnić", "Ahmad Musaffa"]
+  gem.email        = ["janko.marohnic@gmail.com", "musaffa_csemm@yahoo.com"]
   gem.license      = "MIT"
 
   gem.files        = Dir["README.md", "LICENSE.txt", "lib/**/*.rb", "*.gemspec"]

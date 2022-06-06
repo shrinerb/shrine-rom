@@ -2,8 +2,6 @@
 
 Provides [ROM] integration for [Shrine].
 
-_Note: This is still a work in progress. I'm currently working on wrapping up the demo application, and then I'll release the gem._
-
 ## Installation
 
 Put the gem in your Gemfile:
